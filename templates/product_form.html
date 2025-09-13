@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ action }} Product</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" value="{{ product.name if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required>{{ product.description if product else '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" value="{{ product.price if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="{{ product.quantity if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="category_id">Category:</label>
+            <select id="category_id" name="category_id">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if product and product.category_id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="image">Product Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            {% if product and product.image %}
+                <p>Current image: {{ product.image }}</p>
+            {% endif %}
+        </div>
+        <button type="submit">{{ action }} Product</button>
+    </form>
+</div>
+{% endblock %}

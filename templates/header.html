@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Dairy Harvesting - Enhanced Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.09);
+            border-radius: 12px;
+            border: 1px solid #d1e0ff;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c7da0, #468faf);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(44, 125, 160, 0.3);
+        }
+        
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .brand-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c7da0;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand-tagline {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-item {
+            color: #495057;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 5px;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .nav-item:hover {
+            color: #2c7da0;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(to right, #2c7da0, #a9d6e5);
+            transition: width 0.3s;
+            border-radius: 3px;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        /* Clock Container */
+        .clock-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .clock {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #2c7da0;
+            border-radius: 50%;
+            position: relative;
+            background: white;
+        }
+        
+        .clock-hand {
+            position: absolute;
+            transform-origin: bottom center;
+            bottom: 50%;
+            left: 50%;
+            border-radius: 2px;
+        }
+        
+        .hour-hand {
+            height: 12px;
+            width: 3px;
+            background: #2c7da0;
+            margin-left: -1.5px;
+        }
+        
+        .minute-hand {
+            height: 16px;
+            width: 2px;
+            background: #468faf;
+            margin-left: -1px;
+        }
+        
+        .second-hand {
+            height: 18px;
+            width: 1px;
+            background: #e63946;
+            margin-left: -0.5px;
+        }
+        
+        .clock-center {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #e63946;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        
+        .digital-clock {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        /* User Actions */
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #2c7da0;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .action-btn:hover {
+            background: #2c7da0;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(44, 125, 160, 0.3);
+        }
+        
+        /* Demo Content */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .page-title {
+            font-size: 32px;
+            color: #2c7da0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-img {
+            height: 180px;
+            background: linear-gradient(to right, #a9d6e5, #f0f7ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c7da0;
+            font-size: 24px;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            color: #2c7da0;
+            margin-bottom: 10px;
+        }
+        
+        .card-text {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .brand-name {
+                font-size: 22px;
+            }
+            
+            .clock-container {
+                display: none;
+            }
+            
+            .nav {
+                gap: 10px;
+            }
+            
+            .nav-item {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-cow"></i>
+                </div>
+                <div class="brand">
+                    <div class="brand-name">PURE DAIRY HARVESTING</div>
+                    <div class="brand-tagline">Farm Fresh &amp; Organic</div>
+                </div>
+            </div>
+            
+            <div class="clock-container">
+                <div class="clock">
+                    <div class="clock-hand hour-hand" id="hour-hand"></div>
+                    <div class="clock-hand minute-hand" id="minute-hand"></div>
+                    <div class="clock-hand second-hand" id="second-hand"></div>
+                    <div class="clock-center"></div>
+                </div>
+                <div class="digital-clock" id="digital-clock">00:00:00</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="#" class="nav-item">Home</a>
+                <a href="#" class="nav-item">Products</a>
+                <a href="#" class="nav-item">Farmers</a>
+                <a href="#" class="nav-item">About Us</a>
+                <a href="#" class="nav-item">Contact</a>
+            </nav>
+            
+            <div class="user-actions">
+                <div class="action-btn">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="content">
+        <h1 class="page-title">Welcome to Pure Dairy Harvesting</h1>
+        <p>This is a demonstration of the enhanced header with clock functionality. The header is sticky and will remain visible as you scroll down the page.</p>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-img">
+                    <i class="fas fa-cheese"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Fresh Dairy Products</h3>
+                    <p class="card-text">We offer a wide range of fresh dairy products directly from our farms to your table.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Fast Delivery</h3>
+                    <p class="card-text">Our products are delivered quickly to ensure maximum freshness and quality.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Organic Farming</h3>
+                    <p class="card-text">We practice sustainable and organic farming methods for healthier products.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            // Update digital clock
+            document.getElementById('digital-clock').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // Update analog clock
+            const secondDegrees = ((seconds / 60) * 360) + 90;
+            const minuteDegrees = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
+            const hourDegrees = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
+            
+            document.getElementById('second-hand').style.transform = `rotate(${secondDegrees}deg)`;
+            document.getElementById('minute-hand').style.transform = `rotate(${minuteDegrees}deg)`;
+            document.getElementById('hour-hand').style.transform = `rotate(${hourDegrees}deg)`;
+        }
+        
+        // Initial call and set interval
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)';
+            } else {
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.09)';
+                header.style.background = 'linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%)';
+            }
+        });
+    </script>
+</body>
+</html>

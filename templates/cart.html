@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Shopping Cart</h2>
+    
+    {% if cart_items %}
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <!-- INDIVIDUAL FORM FOR EACH PRODUCT -->
+        <form action="{{ url_for('cart') }}" method="POST">
+        <div class="cart-item">
+            <div class="item-info">
+                <h4>{{ item.product.name }}</h4>
+                <p>Price: ₹{{ item.product.price }} each</p>
+            </div>
+            <div class="item-quantity">
+                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                <label for="quantity-{{ item.product.id }}">Quantity:</label>
+                <input type="number" 
+                       id="quantity-{{ item.product.id }}" 
+                       name="quantity" 
+                       value="{{ item.quantity }}" 
+                       min="1" 
+                       max="{{ item.product.quantity }}" 
+                       onchange="this.form.submit()"
+                       style="width: 60px; padding: 5px; margin-right: 10px;">
+            </div>
+            </form> <!-- CLOSE THE FORM HERE -->
+            <div class="item-total">
+                <p>₹{{ item.product.price * item.quantity }}</p>
+                <a href="{{ url_for('remove_from_cart', id=item.product.id) }}" class="remove-link">Remove</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="cart-total">
+        <h3>Total: ₹{{ total }}</h3>
+    </div>
+    
+    <div class="cart-actions">
+        <a href="{{ url_for('index') }}" class="button secondary">Continue Shopping</a>
+        <a href="{{ url_for('checkout') }}" class="button">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{{ url_for('index') }}" class="button">Browse Products</a>
+    {% endif %}
+</div>
+
+<style>
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+    .item-info {
+        flex: 2;
+    }
+    .item-quantity {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+    .item-total {
+        flex: 1;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .remove-link {
+        color: #ff4444;
+        text-decoration: none;
+        margin-top: 5px;
+    }
+    .remove-link:hover {
+        text-decoration: underline;
+    }
+    input[type="number"] {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+    }
+</style>
+{% endblock %}

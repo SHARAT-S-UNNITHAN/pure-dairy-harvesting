@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Our Dairy Products</h2>
+
+    <!-- Search and Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('index') }}" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Search Products</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Search by name..." value="{{ request.args.get('search', '') }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if request.args.get('category') == category.id|string %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    {% if products %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card h-100 product-card">
+                <!-- Product Image -->
+                {% if product.image %}
+               <!-- Replace any product image references with this format -->
+<img src="{{ url_for('serve_product_image', filename=product.image) }}" alt="{{ product.name }}" class="product-image">
+                     
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.description[:100] }}{% if product.description|length > 100 %}...{% endif %}</p>
+                    
+                    <div class="product-details">
+                        <p class="price text-success"><strong>₹{{ product.price }}</strong></p>
+                        <p class="quantity"><small class="text-muted">Available: {{ product.quantity }} units</small></p>
+                        
+                        {% if product.category %}
+                        <span class="badge bg-info mb-2">{{ product.category.name }}</span>
+                        {% endif %}
+                        
+                        <p class="farmer-link">
+                            <small>From: <a href="{{ url_for('view_farmer', farmer_id=product.farmer.id) }}" class="text-decoration-none text-primary">
+                                {{ product.farmer.farm_name or product.farmer.name }}
+                            </a></small>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-white">
+                    {% if session.get('role') == 'customer' %}
+                    <a href="{{ url_for('add_to_cart', id=product.id) }}" class="btn btn-primary w-100">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </a>
+                    {% elif not session.get('user_id') %}
+                    <small class="text-muted">Login as customer to purchase</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 3rem; color: #6c757d;"></i>
+        <h4 class="text-muted mt-3">No products found</h4>
+        <p class="text-muted">Try adjusting your search filters or check back later.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .product-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border: 1px solid #e9ecef;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .price {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+    .farmer-link {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}

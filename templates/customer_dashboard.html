@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Customer Dashboard</h2>
+    
+    <!-- Remove or comment out the problematic line -->
+    {# {% set recent_products = Product.query.filter_by(approved=True).order_by(Product.created_at.desc()).limit(3).all() %} #}
+    <p>Welcome, {{ user.name }}! Browse our fresh dairy products.</p>
+    
+    <div class="dashboard-actions">
+        <a href="{{ url_for('index') }}" class="button">Browse Products</a>
+        <a href="{{ url_for('cart') }}" class="button">View Cart</a>
+        <a href="{{ url_for('order_history') }}" class="button">Order History</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Products</h3>
+    {#{% set recent_products = Product.query.filter_by(approved=True).order_by(Product.created_at.desc()).limit(3).all() %}#}
+    {% if recent_products %}
+    <div class="product-grid">
+        {% for product in recent_products %}
+        <div class="product-card">
+            {% if product.image %}
+                <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" alt="{{ product.name }}" width="200">
+            {% else %}
+                <div class="placeholder-image">No Image</div>
+            {% endif %}
+            <h4>{{ product.name }}</h4>
+            <p class="price">₹{{ product.price }}</p>
+            <a href="{{ url_for('add_to_cart', id=product.id) }}" class="button">Add to Cart</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No products available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h2 class="text-center text-dark mb-0">Create Your Account</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name" class="form-label">Full Name *</label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" id="email" name="email" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="password" class="form-label">Password *</label>
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="text" id="phone" name="phone" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="role" class="form-label">Select Your Role *</label>
+                            <select id="role" name="role" class="form-select" required onchange="toggleFarmerFields()">
+                                <option value="">Choose your role...</option>
+                                {% for role in roles %}
+                                    <option value="{{ role.name }}">{{ role.name|capitalize }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Farmer Specific Fields -->
+                        <div id="farmer-fields" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="farm_name" class="form-label">Farm Name *</label>
+                                        <input type="text" id="farm_name" name="farm_name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="location" class="form-label">Location *</label>
+                                        <input type="text" id="location" name="location" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="license_doc" class="form-label">Farming License Document *</label>
+                                <input type="file" id="license_doc" name="license_doc" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                <div class="form-text">Upload your farming license (PDF, DOC, or images). Max 5MB.</div>
+                            </div>
+                             <div class="form-group">
+    <label for="profile_picture">Profile Picture *</label>
+    <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" required>
+    <small class="form-text text-muted">This will be displayed on your farmer profile.</small>
+</div>
+                        </div>
+                       
+
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                        </div>
+
+                        <div class="text-center">
+                            <p>Already have an account? <a href="{{ url_for('login') }}" class="text-decoration-none">Login here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleFarmerFields() {
+        const roleSelect = document.getElementById('role');
+        const farmerFields = document.getElementById('farmer-fields');
+        
+        if (roleSelect.value === 'farmer') {
+            farmerFields.style.display = 'block';
+            // Make farmer fields required
+            document.getElementById('farm_name').required = true;
+            document.getElementById('location').required = true;
+            document.getElementById('license_doc').required = true;
+        } else {
+            farmerFields.style.display = 'none';
+            // Remove required attribute for non-farmers
+            document.getElementById('farm_name').required = false;
+            document.getElementById('location').required = false;
+            document.getElementById('license_doc').required = false;
+        }
+    }
+
+    // Initialize on page load in case of form validation errors
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleFarmerFields();
+    });
+</script>
+
+<style>
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 20px;
+    }
+    .form-control, .form-select {
+        border-radius: 6px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    .btn-primary {
+        background-color: #28a745;
+        border: none;
+        border-radius: 6px;
+        padding: 12px;
+        font-weight: 500;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    #farmer-fields {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border-left: 4px solid #28a745;
+    }
+    .form-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}

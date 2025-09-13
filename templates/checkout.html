@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Checkout</h2>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="shipping_address">Shipping Address:</label>
+            <textarea id="shipping_address" name="shipping_address" required>{% if user.address %}{{ user.address }}{% endif %}</textarea>
+        </div>
+        
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            {% for item in cart_items %}
+            <div class="order-item">
+                <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+                <span>₹{{ item.product.price * item.quantity }}</span>
+            </div>
+            {% endfor %}
+            <div class="order-total">
+                <strong>Total: ₹{{ total }}</strong>
+            </div>
+        </div>
+        
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+{% endblock %}

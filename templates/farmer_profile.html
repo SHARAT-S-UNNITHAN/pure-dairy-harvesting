@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Farmer Information -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Profile Picture -->
+                    {% if farmer.profile_picture %}
+            <img src="{{ url_for('serve_profile_image', filename=farmer.profile_picture) }}" 
+                 alt="{{ farmer.name }}" 
+                 class="rounded-circle me-3" 
+                 style="width: 80px; height: 80px; object-fit: cover;">
+            {% else %}
+                    <div class="bg-light rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                         style="width: 150px; height: 150px;">
+                        <i class="bi bi-person" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <h3>{{ farmer.farm_name or farmer.name }}</h3>
+                    <p class="text-muted">Farm by {{ farmer.name }}</p>
+                    
+                    <div class="text-start">
+                        {% if farmer.location %}
+                        <p><strong>📍 Location:</strong><br>{{ farmer.location }}</p>
+                        {% endif %}
+                        
+                        {% if farmer.bio %}
+                        <p><strong>ℹ️ About:</strong><br>{{ farmer.bio }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- WhatsApp Contact -->
+                    {% if farmer.phone %}
+                    <div class="mt-3">
+                        <a href="https://wa.me/91{{ farmer.phone }}?text=Hi%20{{ farmer.name|urlencode }},%20I%20saw%20your%20products%20on%20FarmConnect%20and%20would%20like%20to%20know%20more."
+                           target="_blank" 
+                           class="btn btn-success">
+                           <i class="bi bi-whatsapp"></i> Contact via WhatsApp
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Farmer's Products -->
+        <div class="col-md-8">
+            <h3 class="mb-4">Products from {{ farmer.farm_name or farmer.name }}</h3>
+            
+            {% if products %}
+            <div class="row">
+                {% for product in products %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        {% if product.image %}
+                        <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" 
+                             class="card-img-top" 
+                             alt="{{ product.name }}"
+                             style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-success"><strong>₹{{ product.price }}</strong></p>
+                            <p class="card-text"><small>Available: {{ product.quantity }} units</small></p>
+                            
+                            {% if product.category %}
+                            <span class="badge bg-info">{{ product.category.name }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-footer">
+                            {% if session.get('role') == 'customer' %}
+                            <a href="{{ url_for('add_to_cart', id=product.id) }}" class="btn btn-primary btn-sm">
+                                Add to Cart
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                <h4 class="text-muted mt-3">No products available</h4>
+                <p class="text-muted">This farmer hasn't added any products yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

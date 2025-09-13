@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Order History</h2>
+    
+    {% if orders %}
+    <div class="order-list">
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <h4>Order #{{ order.id }}</h4>
+                <p>Date: {{ order.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                <p>Status: {{ order.status }}</p>
+            </div>
+            <div class="order-details">
+                <p>Shipping Address: {{ order.shipping_address }}</p>
+                <h5>Items:</h5>
+                <ul>
+                    {% for item in order.items %}
+                    <li>{{ item.product.name }} - {{ item.quantity }} x ₹{{ item.price_at_purchase }} = ₹{{ item.quantity * item.price_at_purchase }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="order-total">
+                    <strong>Total: ₹{{ order.items|sum(attribute='quantity') * order.items|sum(attribute='price_at_purchase') }}</strong>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>You haven't placed any orders yet.</p>
+    <a href="{{ url_for('index') }}" class="button">Browse Products</a>
+    {% endif %}
+</div>
+{% endblock %}
