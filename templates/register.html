@@ -72,19 +72,19 @@
                                 <input type="file" id="license_doc" name="license_doc" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                                 <div class="form-text">Upload your farming license (PDF, DOC, or images). Max 5MB.</div>
                             </div>
-                             <div class="form-group">
-    <label for="profile_picture">Profile Picture *</label>
-    <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*" required>
-    <small class="form-text text-muted">This will be displayed on your farmer profile.</small>
-</div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="profile_picture" class="form-label">Profile Picture *</label>
+                                <input type="file" id="profile_picture" name="profile_picture" class="form-control" accept="image/*">
+                                <div class="form-text">This will be displayed on your farmer profile.</div>
+                            </div>
                         </div>
                        
-
-                        <div class="form-group mb-3">
-                            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                        <div class="form-group mb-3 mt-4">
+                            <button type="submit" class="btn btn-success w-100 py-2 fs-5">Create Account</button>
                         </div>
 
-                        <div class="text-center">
+                        <div class="text-center mt-3">
                             <p>Already have an account? <a href="{{ url_for('login') }}" class="text-decoration-none">Login here</a></p>
                         </div>
                     </form>
@@ -98,6 +98,7 @@
     function toggleFarmerFields() {
         const roleSelect = document.getElementById('role');
         const farmerFields = document.getElementById('farmer-fields');
+        const profilePicture = document.getElementById('profile_picture');
         
         if (roleSelect.value === 'farmer') {
             farmerFields.style.display = 'block';
@@ -105,12 +106,14 @@
             document.getElementById('farm_name').required = true;
             document.getElementById('location').required = true;
             document.getElementById('license_doc').required = true;
+            profilePicture.required = true;
         } else {
             farmerFields.style.display = 'none';
             // Remove required attribute for non-farmers
             document.getElementById('farm_name').required = false;
             document.getElementById('location').required = false;
             document.getElementById('license_doc').required = false;
+            profilePicture.required = false;
         }
     }
 
